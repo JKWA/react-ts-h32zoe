@@ -45,7 +45,7 @@ const mockCarQuery = (query: Query): Promise<Car[]> => {
   const { take, offset } = query;
 
   return new Promise((resolve) => {
-    if (Math.random() < 0.33) {
+    if (Math.random() < 0.15) {
       throw 'The task errored';
     }
     setTimeout(() => {

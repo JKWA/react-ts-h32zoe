@@ -91,8 +91,6 @@ export function create<T>(
       WithDeduplicate(deduplicate),
       WithDeduplicateAndSearch(search)
     );
-
-    // return WithDeduplicateAndSearch(search)(deduplicate)(task)(query);
   }
 
   if (search) {
