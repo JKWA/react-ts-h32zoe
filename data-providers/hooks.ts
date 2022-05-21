@@ -1,4 +1,4 @@
-export { default as useArrayDataProvider } from './array-provider';
-export { default as useArrayWithSearchDataProvider } from './array-with-search';
-export { default as useDeduplicateDataProvider } from './deduplicate-array';
-export { default as useDeduplicateWithSearchDataProvider } from './deduplicate-with-search';
+export { default as useArrayDataProvider } from "./array-data-provider";
+export { default as withSearch } from "./with-search";
+export { default as withDeduplicate } from "./with-deduplicate";
+export { default as withDeduplicateAndSearch } from "./with-deduplicate-and-search";

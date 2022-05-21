@@ -1,17 +1,18 @@
-import { Eq } from 'fp-ts/Eq';
-import { TaskEither as TaskEitherType } from 'fp-ts/TaskEither';
-import DeduplicateWithSearch from './deduplicate-with-search';
-import ArrayWithSearch from './array-with-search';
-import ArrayDataProvider from './array-provider';
-import DeduplicateDataProvider from './deduplicate-array';
+import ArrayDataProvider from "./array-data-provider";
+import { Eq } from "fp-ts/Eq";
+import { TaskEither as TaskEitherType } from "fp-ts/TaskEither";
+import WithDeduplicate from "./with-deduplicate";
+import WithDeduplicateAndSearch from "./with-deduplicate-and-search";
+import WithSearch from "./with-search";
+import { pipe } from "fp-ts/lib/function";
 
 export type Query = { offset?: number; take?: number };
 
 export enum Type {
-  Array = 'array',
-  DeduplateArray = 'deduplicate_array',
-  ArrayWithSearch = 'array_with_search',
-  DeduplicateArrayWithSearch = 'deduplicate_array_with_search',
+  Array = "array",
+  DeduplateArray = "deduplicate_array",
+  ArrayWithSearch = "array_with_search",
+  DeduplicateArrayWithSearch = "deduplicate_array_with_search",
 }
 
 export type Search = (search: string) => (item: any) => boolean;
@@ -56,19 +57,17 @@ export type ArrayProvider<T> = (
 
 export type DeduplicateArray<T> = (
   eq: Deduplicate
-) => (data: TaskEither) => (query: Query) => DeduplicateArrayOutput<T>;
+) => (baseOutput: ArrayProviderOutput<T>) => DeduplicateArrayOutput<T>;
 
 export type ArrayWithSearch<T> = (
   searchQuery: Search
-) => (data: TaskEither) => (query: Query) => ArrayWithSearchOutput<T>;
+) => (baseOutput: ArrayProviderOutput<T>) => ArrayWithSearchOutput<T>;
 
 export type DeduplicateArrayWithSearch<T> = (
   searchQuery: Search
 ) => (
-  eq: Deduplicate
-) => (
-  data: TaskEither
-) => (query: Query) => DeduplicateArrayWithSearchOutput<T>;
+  baseOutput: DeduplicateArrayOutput<T>
+) => DeduplicateArrayWithSearchOutput<T>;
 
 export type Output<T> =
   | ArrayProviderOutput<T>
@@ -87,15 +86,21 @@ export function create<T>(
   const { query = {}, search, deduplicate } = options;
 
   if (search && deduplicate) {
-    return DeduplicateWithSearch(search)(deduplicate)(task)(query);
+    return pipe(
+      ArrayDataProvider(task)(query),
+      WithDeduplicate(deduplicate),
+      WithDeduplicateAndSearch(search)
+    );
+
+    // return WithDeduplicateAndSearch(search)(deduplicate)(task)(query);
   }
 
   if (search) {
-    return ArrayWithSearch(search)(task)(query);
+    return pipe(ArrayDataProvider(task)(query), WithSearch(search));
   }
 
   if (deduplicate) {
-    return DeduplicateDataProvider(deduplicate)(task)(query);
+    return pipe(ArrayDataProvider(task)(query), WithDeduplicate(deduplicate));
   }
 
   return ArrayDataProvider(task)(query);

@@ -1,9 +1,12 @@
-import * as React from 'react';
-import { useRef } from 'react';
-import { sort } from 'fp-ts/lib/Array';
-import { useArrayWithSearchDataProvider } from '../../data-providers/hooks';
-import * as Data from '../../data';
-import ShowErrors from '../ShowErrors';
+import * as Data from "../../data";
+import * as React from "react";
+
+import { useArrayDataProvider, withSearch } from "../../data-providers/hooks";
+
+import ShowErrors from "../ShowErrors";
+import { pipe } from "fp-ts/function";
+import { sort } from "fp-ts/lib/Array";
+import { useRef } from "react";
 
 type Props = {
   title: string;
@@ -11,9 +14,12 @@ type Props = {
 
 const ListWithSearchUsingHook = (props: Props) => {
   const { title } = props;
-  const dataProvider = useArrayWithSearchDataProvider(Data.searchAll)(
-    Data.getCars
-  )({ offset: 0, take: 5 });
+  const query = { offset: 0, take: 5 };
+
+  const dataProvider = pipe(
+    useArrayDataProvider(Data.getCars)(query),
+    withSearch(Data.searchAll)
+  );
 
   const { search, next, selectAll, selectFiltered, errors } = dataProvider;
 

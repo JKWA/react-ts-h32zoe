@@ -1,7 +1,8 @@
-import * as React from 'react';
-import * as Data from '../../complex-data';
-import ShowErrors from '../ShowErrors';
-import { useArrayDataProvider } from '../../data-providers/hooks';
+import * as Data from "../../complex-data";
+import * as React from "react";
+
+import ShowErrors from "../ShowErrors";
+import { useArrayDataProvider } from "../../data-providers/hooks";
 
 type Props = {
   title: string;
@@ -35,9 +36,9 @@ const ComplexDataExample = (props: Props) => {
             <div
               key={index}
               style={{
-                border: '1px solid darkgrey',
-                marginBottom: '10px',
-                padding: '10px',
+                border: "1px solid darkgrey",
+                marginBottom: "10px",
+                padding: "10px",
               }}
             >
               <h2>{person}</h2>
