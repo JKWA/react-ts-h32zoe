@@ -3,6 +3,7 @@ import * as React from "react";
 
 import ShowErrors from "../ShowErrors";
 import { useArrayDataProvider } from "../../data-providers/hooks";
+import WorkingMessage from '../WorkingMessage';
 
 type Props = {
   title: string;
@@ -16,7 +17,7 @@ const ComplexDataExample = (props: Props) => {
     take: 1,
   });
 
-  const { next, selectAll, errors } = dataProvider;
+  const { next, selectAll, errors, working } = dataProvider;
 
   return (
     <div>
@@ -70,6 +71,7 @@ const ComplexDataExample = (props: Props) => {
       </div>
       {errors.length > 0 && <ShowErrors errors={errors} />}
       <button onClick={next}>Get another</button>
+      <WorkingMessage show={working} message={"Working..."}/>
     </div>
   );
 };

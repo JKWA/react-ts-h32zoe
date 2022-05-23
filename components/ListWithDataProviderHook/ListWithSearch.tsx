@@ -1,12 +1,13 @@
-import * as Data from "../../data";
-import * as React from "react";
+import * as Data from '../../data';
+import * as React from 'react';
 
-import { useArrayDataProvider, withSearch } from "../../data-providers/hooks";
+import { useArrayDataProvider, withSearch } from '../../data-providers/hooks';
 
-import ShowErrors from "../ShowErrors";
-import { pipe } from "fp-ts/function";
-import { sort } from "fp-ts/lib/Array";
-import { useRef } from "react";
+import ShowErrors from '../ShowErrors';
+import { pipe } from 'fp-ts/function';
+import { sort } from 'fp-ts/lib/Array';
+import { useRef } from 'react';
+import WorkingMessage from '../WorkingMessage';
 
 type Props = {
   title: string;
@@ -21,7 +22,8 @@ const ListWithSearchUsingHook = (props: Props) => {
     withSearch(Data.searchAll)
   );
 
-  const { search, next, selectAll, selectFiltered, errors } = dataProvider;
+  const { search, next, selectAll, selectFiltered, errors, working } =
+    dataProvider;
 
   const ref = useRef<HTMLInputElement>(null);
 
@@ -49,6 +51,7 @@ const ListWithSearchUsingHook = (props: Props) => {
         ))}
       </ol>
       <button onClick={next}>Add Items</button>
+      <WorkingMessage show={working} message={'Working...'} />
     </div>
   );
 };

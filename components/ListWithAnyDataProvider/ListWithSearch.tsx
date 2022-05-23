@@ -7,6 +7,7 @@ import {
   DeduplicateArrayWithSearchOutput,
 } from '../../data-providers';
 import ShowErrors from '../ShowErrors';
+import WorkingMessage from '../WorkingMessage';
 
 type Props<T> = {
   title: string;
@@ -18,7 +19,8 @@ type Props<T> = {
 const ListWithSearch = <T, K>(props: Props<T>) => {
   const { title, dataProvider, ord, template } = props;
   const ref = useRef<HTMLInputElement>(null);
-  const { search, next, selectAll, selectFiltered, errors } = dataProvider;
+  const { search, next, selectAll, selectFiltered, errors, working } =
+    dataProvider;
 
   function handleSearch() {
     if (ref.current) {
@@ -40,6 +42,7 @@ const ListWithSearch = <T, K>(props: Props<T>) => {
         ))}
       </ol>
       <button onClick={next}>Add Items</button>
+      <WorkingMessage show={working} message={'Working...'} />
     </div>
   );
 };

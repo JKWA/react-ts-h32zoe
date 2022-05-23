@@ -3,6 +3,8 @@ import { sort } from 'fp-ts/lib/Array';
 import { Ord } from 'fp-ts/Ord';
 import { ArrayProviderOutput } from '../../data-providers';
 import ShowErrors from '../ShowErrors';
+import WorkingMessage from '../WorkingMessage';
+
 
 type Props<T> = {
   title: string;
@@ -13,7 +15,7 @@ type Props<T> = {
 
 const ListWithSearch = <T, K>(props: Props<T>) => {
   const { title, dataProvider, ord, template } = props;
-  const { next, selectAll, errors } = dataProvider;
+  const { next, selectAll, errors, working } = dataProvider;
   return (
     <div>
       <h2>{title}</h2>
@@ -24,7 +26,10 @@ const ListWithSearch = <T, K>(props: Props<T>) => {
           <li key={index}>{template(item)}</li>
         ))}
       </ol>
-      <button onClick={next}>Add Items</button>
+      <button disabled={working} onClick={next}>
+        Add Items
+      </button>
+      <WorkingMessage show={working} message={"Working..."}/>
     </div>
   );
 };

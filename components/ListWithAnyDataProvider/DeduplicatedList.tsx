@@ -3,6 +3,7 @@ import { sort } from 'fp-ts/lib/Array';
 import { Ord } from 'fp-ts/Ord';
 import { DeduplicateArrayOutput } from '../../data-providers';
 import ShowErrors from '../ShowErrors';
+import WorkingMessage from '../WorkingMessage';
 
 type Props<T> = {
   title: string;
@@ -13,7 +14,7 @@ type Props<T> = {
 
 const DeduplicatedList = <T,> (props: Props<T>) => {
   const { title, dataProvider, ord, template } = props;
-  const { next, selectAll, errors } = dataProvider;
+  const { next, selectAll, errors, working } = dataProvider;
 
   return (
     <div>
@@ -26,6 +27,7 @@ const DeduplicatedList = <T,> (props: Props<T>) => {
         ))}
       </ol>
       <button onClick={next}>Add Items</button>
+      <WorkingMessage show={working} message={"Working..."}/>
     </div>
   );
 };

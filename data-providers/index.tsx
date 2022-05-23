@@ -26,6 +26,7 @@ type BaseOutput<T> = {
   errors: Error[];
   next: () => void;
   selectAll: T[];
+  working: boolean;
 };
 
 type SearchOutput<T> = {
