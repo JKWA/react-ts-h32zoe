@@ -1,18 +1,18 @@
-import ArrayDataProvider from "./array-data-provider";
-import { Eq } from "fp-ts/Eq";
-import { TaskEither as TaskEitherType } from "fp-ts/TaskEither";
-import WithDeduplicate from "./with-deduplicate";
-import WithDeduplicateAndSearch from "./with-deduplicate-and-search";
-import WithSearch from "./with-search";
-import { pipe } from "fp-ts/lib/function";
+import arrayDataProvider from './array-data-provider';
+import { Eq } from 'fp-ts/Eq';
+import { TaskEither as TaskEitherType } from 'fp-ts/TaskEither';
+import withDeduplicate from './with-deduplicate';
+import withDeduplicateAndSearch from './with-deduplicate-and-search';
+import withSearch from './with-search';
+import { pipe } from 'fp-ts/function';
 
 export type Query = { offset?: number; take?: number };
 
 export enum Type {
-  Array = "array",
-  DeduplateArray = "deduplicate_array",
-  ArrayWithSearch = "array_with_search",
-  DeduplicateArrayWithSearch = "deduplicate_array_with_search",
+  Array = 'array',
+  DeduplateArray = 'deduplicate_array',
+  ArrayWithSearch = 'array_with_search',
+  DeduplicateArrayWithSearch = 'deduplicate_array_with_search',
 }
 
 export type Search = (search: string) => (item: any) => boolean;
@@ -87,19 +87,19 @@ export function create<T>(
 
   if (search && deduplicate) {
     return pipe(
-      ArrayDataProvider(task)(query),
-      WithDeduplicate(deduplicate),
-      WithDeduplicateAndSearch(search)
+      arrayDataProvider(task)(query),
+      withDeduplicate(deduplicate),
+      withDeduplicateAndSearch(search)
     );
   }
 
   if (search) {
-    return pipe(ArrayDataProvider(task)(query), WithSearch(search));
+    return pipe(arrayDataProvider(task)(query), withSearch(search));
   }
 
   if (deduplicate) {
-    return pipe(ArrayDataProvider(task)(query), WithDeduplicate(deduplicate));
+    return pipe(arrayDataProvider(task)(query), withDeduplicate(deduplicate));
   }
 
-  return ArrayDataProvider(task)(query);
+  return arrayDataProvider(task)(query);
 }
